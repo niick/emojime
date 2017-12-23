@@ -13,75 +13,79 @@
     <div id="example2"></div>
     <script type="text/babel">
 
-    var HelloWorld = React.createClass({
-            render: function() {
+        const EmojiMe = React.createClass({
+            render: function () {
                 return (
                         <div>
-                            <input type="text" size="25" style={{lineHeight:"1.5em", height:"1.5em", fontSize:"1.5em"}} placeholder="Your name here" onChange={this.handleChange} />
-                            <div></div>
-                            <Swatch name={this.state.name}/>
+                          <input type="text" size="25" style={{lineHeight: "1.5em", height: "1.5em", fontSize: "1.5em"}}
+                                 placeholder="Your name here" onChange={this.handleChange}/>
+                          <div></div>
+                          <Swatch name={this.state.name}/>
                         </div>
                 );
             },
-            handleChange: function(event) { this.setState({name:event.target.value}); }, 
-            getInitialState: function() {
+            handleChange: function (event) {
+                this.setState({name: event.target.value});
+            },
+            getInitialState: function () {
                 return {value: 'Hello!'};
             },
 
-    });
+        });
 
-    var Swatch = React.createClass({
+        const Swatch = React.createClass({
 
-        render: function() {
-                    var nameHash = "#" + this.calcColor(this.props.name);
-                    var spanStyle = {backgroundColor : nameHash, minWidth:"100%", minHeight:800};
-                    var textStyle = {color : nameHash, fontSize:"4em"};
-                    console.log(spanStyle);
-                    var emoji = this.calcEmoji(this.props.name);
-                    
-                    return (
+            render: function () {
+                const nameHash = "#" + this.calcColor(this.props.name);
+                const spanStyle = {backgroundColor: nameHash, minWidth: "100%", minHeight: 800};
+                const textStyle = {color: nameHash, fontSize: "126px"};
+                console.log(spanStyle);
+                const emoji = this.calcEmoji(this.props.name);
+                console.log("Emoji is: " + emoji);
+
+                return (
                         <div>
-                            <div><span style={textStyle}>{this.props.name}  {emoji}</span></div>
-                            
-                            <div><p style={spanStyle}> </p></div>
+                          <div><span style={textStyle}>{this.props.name} {emoji}</span></div>
+
+                          <div><p style={spanStyle}></p></div>
                         </div>
-                    );
-                }, 
-        hashFunc: function(input) {
+                );
+            },
+            hashFunc: function (input) {
                 console.log(input);
                 console.log(typeof input);
-                var hash = 0, i, chr, len;
+                let hash = 0, i, chr, len;
                 if (typeof input == 'undefined' || input.length === 0) return hash;
                 for (i = 0, len = input.length; i < len; i++) {
-                    chr   = input.charCodeAt(i);
-                    hash  = ((hash << 5) - hash) + chr;
+                    chr = input.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + chr;
                     hash |= 0; // Convert to 32bit integer
                 }
-                
-                return hash >=0 ? hash : hash * -1;
-        },
-        calcColor: function(name) {
-            var decHash = this.hashFunc(name);
-            decHash = decHash % 16777215;
-            var hex = decHash.toString(16);
-            return hex;
-        },
-        calcEmoji: function(name) {
-            //  E63E through E757
-            var decHash = this.hashFunc(name);
-            var range = parseInt("1F52F", 16) - parseInt("1F300", 16);
-            decHash = parseInt("1F300", 16) + (decHash % range);
-            console.log("decHash = " + decHash);
-            var hex = decHash.toString(16);
-            console.log("hex = " + hex);
-            var point = String.fromCodePoint(parseInt(hex, 16));
-            console.log(point);
-            return point;
-        }
-    });
 
-    ReactDOM.render(
-            <HelloWorld date={new Date()}/>,
+                return hash >= 0 ? hash : hash * -1;
+            },
+            calcColor: function (name) {
+                let decHash = this.hashFunc(name);
+                decHash = decHash % 16777215;
+                const hex = decHash.toString(16);
+                return hex;
+            },
+            calcEmoji: function (name) {
+                //  E63E through E757
+                let decHash = this.hashFunc(name);
+                const range = parseInt("1F52F", 16) - parseInt("1F300", 16);
+                decHash = parseInt("1F300", 16) + (decHash % range);
+                console.log("decHash = " + decHash);
+                const hex = decHash.toString(16);
+                console.log("hex = " + hex);
+                const point = String.fromCodePoint(parseInt(hex, 16));
+                console.log(point);
+                return point;
+            }
+        });
+
+        ReactDOM.render(
+            <EmojiMe date={new Date()}/>,
             document.getElementById('example1')
         );
 
